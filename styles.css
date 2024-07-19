@@ -1,0 +1,16 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#input-area {
+  margin: 20px 0;
+}
+
+#input-area input {
+  margin: 5px;
+}
+
+canvas {
+  margin-top: 20px;
+}
