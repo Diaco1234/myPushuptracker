@@ -1,6 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
+  background-color: #f0f0f0; /* Optional: set a background color */
 }
 
 #input-area {
@@ -13,4 +14,28 @@ body {
 
 canvas {
   margin-top: 20px;
+}
+
+/* Glowing backdrop styles */
+body > div.layouts_baseLayout__qEW_w > div.layouts_centeredLayout__fsgoD,
+body > div.layouts_baseLayout__qEW_w > div.layouts_centeredLayout__fsgoD > div {
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+body > div.layouts_baseLayout__qEW_w > div.layouts_centeredLayout__fsgoD::before,
+body > div.layouts_baseLayout__qEW_w > div.layouts_centeredLayout__fsgoD > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 0, 255, 0.5);
+  z-index: -1;
 }

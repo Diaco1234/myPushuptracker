@@ -1,14 +1,14 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('chart').getContext('2d');
 
   let dates = JSON.parse(localStorage.getItem('dates')) || [];
   let reps = JSON.parse(localStorage.getItem('reps')) || [];
   let sets = JSON.parse(localStorage.getItem('sets')) || [];
 
-  let chart = new Chart(ctx, {
+  const chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dates, // Dates
+      labels: dates,
       datasets: [
         {
           label: 'Reps',
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   });
 
-  function addEntry() {
+  window.addEntry = function() {
     const repsValue = document.getElementById('reps').value;
     const setsValue = document.getElementById('sets').value;
     const date = new Date().toISOString();
@@ -54,11 +54,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
       localStorage.setItem('reps', JSON.stringify(reps));
       localStorage.setItem('sets', JSON.stringify(sets));
 
+      chart.data.labels = dates;
+      chart.data.datasets[0].data = reps;
+      chart.data.datasets[1].data = sets;
       chart.update();
     }
-  }
+  };
 
-  function filterData(range) {
+  window.filterData = function(range) {
     const now = new Date();
     let filteredDates = [];
     let filteredReps = [];
@@ -106,8 +109,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     chart.data.datasets[0].data = filteredReps;
     chart.data.datasets[1].data = filteredSets;
     chart.update();
-  }
-
-  window.addEntry = addEntry;
-  window.filterData = filterData;
+  };
 });
