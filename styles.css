@@ -4,6 +4,9 @@ body {
   background: url('background.png') no-repeat center center fixed;
   background-size: cover;
   color: white; /* Ensuring text is visible on dark background */
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 #input-area {
