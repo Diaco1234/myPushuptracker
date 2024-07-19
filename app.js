@@ -1,26 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('chart').getContext('2d');
 
-  let dates = JSON.parse(localStorage.getItem('dates')) || [];
-  let reps = JSON.parse(localStorage.getItem('reps')) || [];
-  let sets = JSON.parse(localStorage.getItem('sets')) || [];
+  const dates = JSON.parse(localStorage.getItem('dates')) || [];
+  const reps = JSON.parse(localStorage.getItem('reps')) || [];
+  const sets = JSON.parse(localStorage.getItem('sets')) || [];
+  
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}`;
+  };
 
   const chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dates,
+      labels: dates.map(formatDate),
       datasets: [
         {
           label: 'Reps',
           data: reps,
           borderColor: 'blue',
-          fill: false
+          backgroundColor: 'rgba(0, 0, 255, 0.2)',
+          fill: true,
+          pointRadius: 5,
+          pointHoverRadius: 8
         },
         {
           label: 'Sets',
           data: sets,
           borderColor: 'green',
-          fill: false
+          backgroundColor: 'rgba(0, 255, 0, 0.2)',
+          fill: true,
+          pointRadius: 5,
+          pointHoverRadius: 8
         }
       ]
     },
@@ -30,11 +41,29 @@ document.addEventListener('DOMContentLoaded', () => {
         x: {
           type: 'time',
           time: {
-            unit: 'day'
+            unit: 'day',
+            tooltipFormat: 'll'
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
           }
         },
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const label = context.dataset.label || '';
+              const date = formatDate(context.label);
+              return `${label}: ${context.raw} (${date})`;
+            }
+          }
         }
       }
     }
@@ -54,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('reps', JSON.stringify(reps));
       localStorage.setItem('sets', JSON.stringify(sets));
 
-      chart.data.labels = dates;
+      chart.data.labels = dates.map(formatDate);
       chart.data.datasets[0].data = reps;
       chart.data.datasets[1].data = sets;
       chart.update();
@@ -105,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    chart.data.labels = filteredDates;
+    chart.data.labels = filteredDates.map(formatDate);
     chart.data.datasets[0].data = filteredReps;
     chart.data.datasets[1].data = filteredSets;
     chart.update();
